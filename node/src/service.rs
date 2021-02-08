@@ -9,7 +9,7 @@ use sp_inherents::InherentDataProviders;
 use sc_executor::native_executor_instance;
 pub use sc_executor::NativeExecutor;
 use sc_finality_grandpa::SharedVoterState;
-use sc_keystore::LocalKeystore;
+// use sc_keystore::LocalKeystore;
 
 // Our native executor instance.
 native_executor_instance!(

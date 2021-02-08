@@ -1264,6 +1264,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
+name = "enumflags2"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83c8d82922337cd23a15f88b70d8e4ef5f11da38dd7cdb55e84dd5de99695da0"
+dependencies = [
+ "enumflags2_derive",
+]
+
+[[package]]
+name = "enumflags2_derive"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "946ee94e3dbf58fdd324f9ce245c7b238d46a66f00e86a020b71996349e46cce"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "env_logger"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3535,18 +3555,24 @@ dependencies = [
  "pallet-authorship",
  "pallet-babe",
  "pallet-balances",
+ "pallet-bounties",
  "pallet-collective",
  "pallet-elections-phragmen",
  "pallet-grandpa",
  "pallet-indices",
  "pallet-membership",
+ "pallet-multisig",
+ "pallet-proxy",
  "pallet-randomness-collective-flip",
+ "pallet-recovery",
+ "pallet-scheduler",
  "pallet-session",
  "pallet-staking",
  "pallet-staking-reward-curve",
  "pallet-sudo",
  "pallet-template",
  "pallet-timestamp",
+ "pallet-tips",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-treasury",
@@ -3781,6 +3807,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-bounties"
+version = "2.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-treasury",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-cdp"
 version = "2.0.0"
 dependencies = [
@@ -3887,6 +3927,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-multisig"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-proxy"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-randomness-collective-flip"
 version = "2.0.1"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
@@ -3895,6 +3965,36 @@ dependencies = [
  "frame-system",
  "parity-scale-codec 2.0.0",
  "safe-mix",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-recovery"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "enumflags2",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-scheduler"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-io",
  "sp-runtime",
  "sp-std",
 ]
@@ -4006,6 +4106,20 @@ dependencies = [
  "sp-runtime",
  "sp-std",
  "sp-timestamp",
+]
+
+[[package]]
+name = "pallet-tips"
+version = "2.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#0b719f85222c85ff095585d128fac1979bbfdd38"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-treasury",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
@@ -8461,44 +8575,14 @@ version = "2.0.1"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
 
 [[patch.unused]]
-name = "pallet-bounties"
-version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
 name = "pallet-im-online"
 version = "2.0.1"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#0b719f85222c85ff095585d128fac1979bbfdd38"
 
 [[patch.unused]]
-name = "pallet-multisig"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
 name = "pallet-offences"
 version = "2.0.1"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
-name = "pallet-proxy"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
-name = "pallet-recovery"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
-name = "pallet-scheduler"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
-name = "pallet-tips"
-version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#0b719f85222c85ff095585d128fac1979bbfdd38"
 
 [[patch.unused]]
 name = "sc-consensus-aura"
