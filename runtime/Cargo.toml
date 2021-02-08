@@ -12,20 +12,21 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
+static_assertions = "1.1.0"
 
 frame-system = { version = "2.0.0", default-features = false }
 frame-support = { version = "2.0.0", default-features = false }
 frame-executive = { version = "2.0.0", default-features = false }
 pallet-authorship = { version = "2.0.0", default-features = false }
 pallet-balances = { version = "2.0.0", default-features = false }
-#pallet-collective = { version = "2.0.0", default-features = false }
-#pallet-elections-phragmen = { version = "2.0.0", default-features = false }
+pallet-collective = { version = "2.0.0", default-features = false }
+pallet-membership = { version = "2.0.0", default-features = false }
+pallet-elections-phragmen = { version = "3.0.0", default-features = false }
 #pallet-aura = { version = "2.0.0", default-features = false }
 pallet-babe = { version = "2.0.0", default-features = false }
 pallet-grandpa = { version = "2.0.0", default-features = false }
 pallet-indices = { version = "2.0.0", default-features = false }
 #pallet-im-online = { version="2.0.0", default-features = false }
-#pallet-membership = { version = "2.0.0", default-features = false }
 #pallet-multisig = { version = "2.0.0", default-features = false }
 #pallet-offences = { version = "2.0.0", default-features = false }
 #pallet-proxy = { version = "2.0.0", default-features = false }
@@ -79,11 +80,11 @@ std = [
 	"pallet-balances/std",
 	"pallet-babe/std",
 	"pallet-grandpa/std",
-#	"pallet-collective/std",
-#	"pallet-elections-phragmen/std",
+	"pallet-collective/std",
+	"pallet-elections-phragmen/std",
 	"pallet-indices/std",
 #	"pallet-im-online/std",
-#	"pallet-membership/std",
+	"pallet-membership/std",
 #	"pallet-multisig/std",
 #	"pallet-proxy/std",
 	"pallet-randomness-collective-flip/std",

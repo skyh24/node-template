@@ -4,7 +4,8 @@ use node_template_runtime::{
 	SessionKeys, StakerStatus, DOLLARS,
 	GenesisConfig, SystemConfig, SudoConfig,
 	BabeConfig, GrandpaConfig, BalancesConfig,
-	IndicesConfig, SessionConfig, StakingConfig
+	IndicesConfig, SessionConfig, StakingConfig,
+	CouncilConfig, TechnicalCommitteeConfig
 };
 use sp_consensus_babe::AuthorityId as BabeId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -183,6 +184,16 @@ fn testnet_genesis(
 			slash_reward_fraction: Perbill::from_percent(10),
 			..Default::default()
 		}),
-
+		pallet_collective_Instance1: Some(CouncilConfig {
+			members: vec![],
+			phantom: Default::default(),
+		}),
+		pallet_collective_Instance2: Some(TechnicalCommitteeConfig {
+			members: vec![],
+			phantom: Default::default(),
+		}),
+		pallet_membership_Instance1: Some(Default::default()),
+		pallet_elections_phragmen: Some(Default::default()),
+		pallet_treasury: Some(Default::default()),
 	}
 }

@@ -3535,8 +3535,11 @@ dependencies = [
  "pallet-authorship",
  "pallet-babe",
  "pallet-balances",
+ "pallet-collective",
+ "pallet-elections-phragmen",
  "pallet-grandpa",
  "pallet-indices",
+ "pallet-membership",
  "pallet-randomness-collective-flip",
  "pallet-session",
  "pallet-staking",
@@ -3562,6 +3565,7 @@ dependencies = [
  "sp-std",
  "sp-transaction-pool",
  "sp-version",
+ "static_assertions",
  "substrate-wasm-builder",
 ]
 
@@ -3790,6 +3794,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-collective"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-dex"
 version = "2.0.0"
 dependencies = [
@@ -3800,6 +3819,20 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-elections-phragmen"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-npos-elections",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
@@ -3835,6 +3868,20 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-keyring",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-membership"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec 2.0.0",
+ "serde",
+ "sp-io",
  "sp-runtime",
  "sp-std",
 ]
@@ -8419,24 +8466,9 @@ version = "2.0.0"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
 
 [[patch.unused]]
-name = "pallet-collective"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
-name = "pallet-elections-phragmen"
-version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
-
-[[patch.unused]]
 name = "pallet-im-online"
 version = "2.0.1"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#0b719f85222c85ff095585d128fac1979bbfdd38"
-
-[[patch.unused]]
-name = "pallet-membership"
-version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#3c9b031e449a6249dde07e00066848e0ee481ddf"
 
 [[patch.unused]]
 name = "pallet-multisig"
