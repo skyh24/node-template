@@ -5,10 +5,9 @@ use sp_runtime::{
     },
     MultiSignature,
 };
+use crate::UncheckedExtrinsic;
 
-/// An index to a block.
 pub type BlockNumber = u32;
-
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
 
@@ -21,6 +20,12 @@ pub type Moment = u64;
 pub type Index = u32;
 pub type Hash = sp_core::H256;
 pub type DigestItem = generic::DigestItem<Hash>;
+
+pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
+pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
+pub type Block = generic::Block<Header, UncheckedExtrinsic>;
+pub type SignedBlock = generic::SignedBlock<Block>;
+pub type BlockId = generic::BlockId<Block>;
 
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know

@@ -27,6 +27,7 @@ pallet-collective = { git = "https://github.com/paritytech/substrate.git", branc
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate.git", branch="master" }
 pallet-grandpa = { git = "https://github.com/paritytech/substrate.git", branch="master" }
 pallet-indices = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+pallet-im-online = { git = "https://github.com/paritytech/substrate.git", branch="master" }
 pallet-membership = { git = "https://github.com/paritytech/substrate.git", branch="master" }
 pallet-multisig = { git = "https://github.com/paritytech/substrate.git", branch="master" }
 pallet-offences = { git = "https://github.com/paritytech/substrate.git", branch="master" }
