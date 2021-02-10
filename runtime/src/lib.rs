@@ -13,6 +13,7 @@ use sp_runtime::{
 	ApplyExtrinsicResult, ModuleId,
 	create_runtime_str, impl_opaque_keys,
 	generic, curve::PiecewiseLinear,
+	traits::{AccountIdConversion, Zero},
 	transaction_validity::{TransactionValidity, TransactionSource, TransactionPriority},
 };
 use sp_runtime::traits::{
@@ -44,6 +45,11 @@ pub use frame_support::{
 	},
 };
 
+use orml_currencies::{BasicCurrencyAdapter, Currency};
+use orml_traits::{
+	create_median_value_data_provider, parameter_type_with_key,
+	DataFeeder, DataProviderExtended
+};
 use pallet_transaction_payment::CurrencyAdapter;
 use pallet_session::historical as pallet_session_historical;
 
@@ -203,10 +209,6 @@ parameter_types! {
 }
 
 parameter_types! {
-	/// A limit for off-chain phragmen unsigned solution submission.
-	///
-	/// We want to keep it as high as possible, but can't risk having it reject,
-	/// so we always subtract the base block execution weight.
 	pub OffchainSolutionWeightLimit: Weight = BlockWeights::get()
 		.get(DispatchClass::Normal)
 		.max_extrinsic
@@ -550,13 +552,6 @@ impl pallet_multisig::Config for Runtime {
 }
 
 parameter_types! {
-	pub const ConfigDepositBase: Balance = 10 * CENTS;
-	pub const FriendDepositFactor: Balance = CENTS;
-	pub const MaxFriends: u16 = 9;
-	pub const RecoveryDeposit: Balance = 10 * CENTS;
-}
-
-parameter_types! {
 	// One storage item; key size 32, value size 8; .
 	pub const ProxyDepositBase: Balance = deposit(1, 8);
 	// Additional storage item size of 33 bytes.
@@ -580,6 +575,13 @@ impl pallet_proxy::Config for Runtime {
 	type CallHasher = BlakeTwo256;
 	type AnnouncementDepositBase = AnnouncementDepositBase;
 	type AnnouncementDepositFactor = AnnouncementDepositFactor;
+}
+
+parameter_types! {
+	pub const ConfigDepositBase: Balance = 10 * CENTS;
+	pub const FriendDepositFactor: Balance = CENTS;
+	pub const MaxFriends: u16 = 9;
+	pub const RecoveryDeposit: Balance = 10 * CENTS;
 }
 
 impl pallet_recovery::Config for Runtime {
@@ -619,6 +621,53 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+parameter_types! {
+	pub const GetNativeCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::BDT);
+	pub const GetStableCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::BUSD);
+	pub const GetBDOTCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::BDOT);
+}
+
+impl orml_currencies::Config for Runtime {
+	type Event = Event;
+	type MultiCurrency = Tokens;
+	type NativeCurrency = BasicCurrencyAdapter<Runtime, Balances, Amount, BlockNumber>;
+	type GetNativeCurrencyId = GetNativeCurrencyId;
+	type WeightInfo = ();
+}
+
+parameter_type_with_key! {
+	pub ExistentialDeposits: |currency_id: CurrencyId| -> Balance {
+		Zero::zero()
+	};
+}
+
+parameter_types! {
+	//pub TreasuryAccount: AccountId = TreasuryModuleId::get().into_account();
+}
+
+impl orml_tokens::Config for Runtime {
+	type Event = Event;
+	type Amount = Amount;
+	type Balance = Balance;
+	type CurrencyId = CurrencyId;
+	type ExistentialDeposits = ExistentialDeposits;
+	type OnDust = ();//orml_tokens::TransferDust<Runtime, TreasuryAccount>;
+	type WeightInfo = ();
+}
+
+// parameter_types! {
+// 	pub const MinVestedTransfer: Balance = 100 * DOLLARS;
+// }
+//
+// impl orml_vesting::Config for Runtime {
+// 	type Event = Event;
+// 	type Currency = pallet_balances::Module<Runtime>;
+// 	type MinVestedTransfer = MinVestedTransfer;
+// 	type VestedTransferOrigin = ();// EnsureRootOrTreasury;
+// 	type WeightInfo = ();
+// }
+
+
 /// Configure the pallet template in pallets/template.
 impl template::Config for Runtime {
 	type Event = Event;
@@ -632,14 +681,9 @@ construct_runtime!(
 		NodeBlock = opaque::Block,
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
-
 		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		System: frame_system::{Module, Call, Config, Storage, Event<T>},
-		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
-
 		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
-		TransactionPayment: pallet_transaction_payment::{Module, Storage},
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
 
 		Babe: pallet_babe::{Module, Call, Storage, Config, Inherent, ValidateUnsigned},
@@ -648,6 +692,14 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Module, Call, Storage, Inherent},
 		Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
 		Staking: pallet_staking::{Module, Call, Config<T>, Storage, Event<T>},
+
+		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: pallet_transaction_payment::{Module, Storage},
+
+		Currencies: orml_currencies::{Module, Call, Event<T>},
+		Tokens: orml_tokens::{Module, Storage, Event<T>, Config<T>},
+		//Vesting: orml_vesting::{Module, Storage, Call, Event<T>, Config<T>},
 
 		// ImOnline: pallet_im_online::{Module, Call, Storage, Event<T>, ValidateUnsigned, Config<T>}
 		// AuthorityDiscovery: pallet_authority_discovery::{Module, Call, Config}

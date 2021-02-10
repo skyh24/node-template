@@ -14,8 +14,9 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
+	use frame_support::{debug, dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
 	use frame_system::pallet_prelude::*;
+	use sp_runtime::print;
 
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
@@ -62,6 +63,11 @@ pub mod pallet {
 			let who = ensure_signed(origin)?;
 
 			<Something<T>>::put(something);
+
+			// Print a message
+			print("Hello World");
+			// Inspecting a variable as well
+			debug::info!("Request sent by: {:?}:", who);
 
 			Self::deposit_event(Event::SomethingStored(something, who));
 			Ok(().into())
