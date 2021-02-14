@@ -21,6 +21,13 @@ type AccountPublic = <Signature as Verify>::Signer;
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
 
+fn session_keys(
+	babe: BabeId,
+	grandpa: GrandpaId,
+) -> SessionKeys {
+	SessionKeys { babe, grandpa }
+}
+
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
 	TPublic::Pair::from_string(&format!("//{}", seed), None)
@@ -88,12 +95,14 @@ pub fn development_config() -> Result<ChainSpec, String> {
 }
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
+	// let mut properties = Map::new();
+	// properties.insert("tokenSymbol".into(), "BDT".into());
+	// properties.insert("tokenDecimals".into(), 12.into()); // 12
+
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
 
 	Ok(ChainSpec::from_genesis(
-		// Name
 		"Local Testnet",
-		// ID
 		"local_testnet",
 		ChainType::Local,
 		move || testnet_genesis(
@@ -135,12 +144,6 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	))
 }
 
-fn session_keys(
-	babe: BabeId,
-	grandpa: GrandpaId,
-) -> SessionKeys {
-	SessionKeys { grandpa, babe }
-}
 /// Configure initial storage state for FRAME modules.
 fn testnet_genesis(
 	wasm_binary: &[u8],
@@ -159,20 +162,20 @@ fn testnet_genesis(
 			changes_trie_config: Default::default(),
 		}),
 		pallet_sudo: Some(SudoConfig { key: root_key.clone() }),
-		pallet_babe: Some(BabeConfig { authorities: vec![] }),
-		pallet_grandpa: Some(GrandpaConfig { authorities: vec![] }),
+		pallet_babe: Some(Default::default()),
+		pallet_grandpa: Some(Default::default()),
 		pallet_indices: Some(IndicesConfig { indices: vec![] }),
 		pallet_balances: Some(BalancesConfig {
-			// Configure endowed accounts with initial balance of 1 << 60.
 			balances: endowed_accounts.iter().cloned().map(|k|(k, 1 << 60)).collect(),
 		}),
-
 		pallet_session: Some(SessionConfig {
-			keys: initial_authorities
-				.iter()
-				.map(|x| (x.0.clone(), x.0.clone(),
-						  session_keys(x.2.clone(), x.3.clone())))
-				.collect::<Vec<_>>(),
+			keys: initial_authorities.iter().map(|x| {
+				(x.0.clone(),
+				 x.0.clone(),
+				 session_keys(
+					 x.2.clone(), x.3.clone()
+				 ))
+			}).collect::<Vec<_>>(),
 		}),
 		pallet_staking: Some(StakingConfig {
 			validator_count: initial_authorities.len() as u32 * 2,

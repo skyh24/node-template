@@ -683,6 +683,9 @@ construct_runtime!(
 	{
 		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		System: frame_system::{Module, Call, Config, Storage, Event<T>},
+		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: pallet_transaction_payment::{Module, Storage},
 		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
 
@@ -692,10 +695,6 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Module, Call, Storage, Inherent},
 		Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
 		Staking: pallet_staking::{Module, Call, Config<T>, Storage, Event<T>},
-
-		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Module, Storage},
 
 		Currencies: orml_currencies::{Module, Call, Event<T>},
 		Tokens: orml_tokens::{Module, Storage, Event<T>, Config<T>},
